@@ -1,15 +1,24 @@
 <template lang="pug">
   #beasties_map_wrapper
 
-    .mb-map-inner
+    transition(name='fade')
+      DungeonPopup(v-if="get_show_dungeon_popup")
 
+    .mb-map-inner
       .mb-map(:id="container_id", v-if="downloaded")
 
 </template>
 
 <script>
+import DungeonPopup from "@/components/pve/DungeonPopup";
+import {mapGetters} from 'vuex';
+
 export default {
   name: "Map",
+
+  components: {
+    DungeonPopup
+  },
 
   data() {
     return {
@@ -17,6 +26,10 @@ export default {
       game_instance: null,
       container_id: 'game-container'
     }
+  },
+
+  computed: {
+    ...mapGetters(['get_show_dungeon_popup'])
   },
 
   async mounted() {
@@ -36,5 +49,11 @@ export default {
 </script>
 
 <style lang="sass">
+.fade-enter-active, .fade-leave-active
+  transition: opacity .5s
+
+.fade-enter, .fade-leave-to
+  opacity: 0
+
 
 </style>

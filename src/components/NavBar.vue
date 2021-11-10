@@ -1,15 +1,14 @@
 <template lang="pug">
   #int_navbar_wrapper
-    p Navber. Player: 
-
+    p Navbar. Player: {{ get_player }}
+      span(@click="player_add_level") (+1)
 
 
 </template>
 
 <script>
 
-import $ from 'jquery'
-import {mapGetters} from 'vuex';
+import {mapGetters, mapMutations} from 'vuex';
 
 export default {
 name: "NavBar",
@@ -24,12 +23,12 @@ name: "NavBar",
   },
 
   computed: {
-
+    ...mapGetters(['get_player'])
   },
 
   methods: {
 
-
+  ...mapMutations(['player_add_level'])
 
 
   },

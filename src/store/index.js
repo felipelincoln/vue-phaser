@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 
 
 import web3_store from '@/store/web3.store'
-import player_store from '@/store/web3.store'
+import player_store from '@/store/player.store'
 
 Vue.use(Vuex)
 

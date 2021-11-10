@@ -1,0 +1,27 @@
+[
+  {
+    "name": "Pharaoh Grave",
+    "stats": {
+      "pa": 2,
+      "pd": 2,
+      "ma": 0,
+      "md": 0
+    },
+    "level": 2,
+    "exp": 1000,
+    "drop": {
+      "potions": [100, 40, 20],
+      "scrolls": [50, 20, 10],
+      "talismans": [50, 20, 0]
+    },
+    "position": {
+      "x": 90,
+      "y": 80
+    },
+    "key": "dungeon_pharaoh_grave",
+    "image": "dungeon_pharaoh_grave.png",
+    "video": "pharaoh_grave.mp4",
+    "sound": ""
+  }
+
+]

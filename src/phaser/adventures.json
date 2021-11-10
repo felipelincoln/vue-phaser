@@ -1,0 +1,29 @@
+[
+  {
+    "name": "Beach",
+    "level": 1,
+    "exp": 100,
+    "position": {
+      "x": 80,
+      "y": 300
+    },
+    "key": "adventure_beach",
+    "image": "adventure_beach.png",
+    "video": "",
+    "sound": ""
+  },
+
+  {
+    "name": "Forest",
+    "level": 2,
+    "exp": 300,
+    "position": {
+      "x": 300,
+      "y": 180
+    },
+    "key": "adventure_forest",
+    "image": "adventure_forest.png",
+    "video": "",
+    "sound": ""
+  }
+]
