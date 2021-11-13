@@ -5,12 +5,17 @@ import {Scene} from 'phaser'
 
 import store from "@/store/index.js"
 
+import {mapGetters, mapMutations} from 'vuex';
+
 const host = process.env.VUE_APP_ASSETS_PATH
 
 console.log(host)
 
 const adventures = require('@/phaser/adventures.json')
 const dungeons = require('@/phaser/dungeons.json')
+
+console.log(adventures)
+console.log(dungeons)
 
 export default class MapScene extends Scene {
 
@@ -20,6 +25,8 @@ export default class MapScene extends Scene {
 
     preload() {
         this.load.image('map', host + 'map/map.png')
+
+        console.log(this)
 
         for (let i = 0; i < adventures.length; i++){
             this.load.image(adventures[i]['key'], `${host}/pins/${adventures[i]['image']}`)
@@ -31,12 +38,25 @@ export default class MapScene extends Scene {
     }
 
     create() {
-        this.beasties_map = this.add.image(0, 0, "map").setInteractive();
-        this.beasties_map.isBeingDragged = false
-        this.beasties_map.movingSpeed = 0
+        this.adventures = adventures;
+        this.dungeons = dungeons;
 
+        this.beasties_map = this.add.image(0, 0, "map").setInteractive();
+
+        for (let i in this.adventures) {
+            this.adventures[i]['object'] = this.add.image(adventures[i]['position']['x'], adventures[i]['position']['y'], adventures[i]['key']).setInteractive()
+        }
+
+        for (let i in this.dungeons) {
+            this.dungeons[i]['object'] = this.add.image(dungeons[i]['position']['x'], dungeons[i]['position']['y'], dungeons[i]['key']).setInteractive()
+        }
+
+        this.input.setTopOnly(true)
         this.input.setDraggable(this.beasties_map)
         this.input.dragDistanceThreshold = 16
+
+        this.beasties_map.isBeingDragged = false
+        this.beasties_map.movingSpeed = 0
 
         this.input.on('dragstart', (pointer, gameObject) => {
           this.beasties_map.isBeingDragged = true
@@ -44,6 +64,14 @@ export default class MapScene extends Scene {
 
         this.input.on('dragend', (pointer, gameObject) => {
           this.beasties_map.isBeingDragged = false
+        })
+
+        this.input.on('gameobjectover', (pointer, gameObject) => {
+          if(gameObject != this.beasties_map){ gameObject.setTint(0xff0000) }
+        })
+
+        this.input.on('gameobjectout', (pointer, gameObject) => {
+          gameObject.clearTint()
         })
 
         this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
@@ -64,16 +92,6 @@ export default class MapScene extends Scene {
           this.test_button.y = dragY + 300
 
         })
-
-        this.adventures = adventures;
-        for (let i in this.adventures) {
-            this.adventures[i]['object'] = this.add.image(adventures[i]['position']['x'], adventures[i]['position']['y'], adventures[i]['key'])
-        }
-
-        this.dungeons = dungeons;
-        for (let i in this.dungeons) {
-            this.dungeons[i]['object'] = this.add.image(dungeons[i]['position']['x'], dungeons[i]['position']['y'], dungeons[i]['key'])
-        }
 
         this.test_button = this.add.text(300, 300, 'Open Dungeon', { fill: '#0f0' });
         this.test_button.setInteractive();
