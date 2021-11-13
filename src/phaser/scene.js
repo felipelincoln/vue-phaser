@@ -5,8 +5,6 @@ import {Scene} from 'phaser'
 
 import store from "@/store/index.js"
 
-import {mapGetters, mapMutations} from 'vuex';
-
 const host = process.env.VUE_APP_ASSETS_PATH
 
 const adventures = require('@/phaser/adventures.json')
@@ -40,10 +38,12 @@ export default class MapScene extends Scene {
 
         for (let i in this.adventures) {
             this.adventures[i]['object'] = this.add.image(adventures[i]['position']['x'], adventures[i]['position']['y'], adventures[i]['key']).setInteractive()
+            this.adventures[i]['object'].data = {level: adventures[i]['level']}
         }
 
         for (let i in this.dungeons) {
             this.dungeons[i]['object'] = this.add.image(dungeons[i]['position']['x'], dungeons[i]['position']['y'], dungeons[i]['key']).setInteractive()
+            this.dungeons[i]['object'].data = {level: dungeons[i]['level']}
         }
 
         this.input.setTopOnly(true)
@@ -62,7 +62,13 @@ export default class MapScene extends Scene {
         })
 
         this.input.on('gameobjectover', (pointer, gameObject) => {
-          if(gameObject != this.beasties_map){ gameObject.setTint(0xff0000) }
+          if(gameObject != this.beasties_map){
+            if(gameObject.data.level > store.getters.get_player.level){
+              gameObject.setTint(0xaaaaaa)
+            } else {
+              gameObject.setTint(0x00ff00)
+            }
+          }
         })
 
         this.input.on('gameobjectout', (pointer, gameObject) => {
