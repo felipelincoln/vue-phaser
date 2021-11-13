@@ -9,13 +9,8 @@ import {mapGetters, mapMutations} from 'vuex';
 
 const host = process.env.VUE_APP_ASSETS_PATH
 
-console.log(host)
-
 const adventures = require('@/phaser/adventures.json')
 const dungeons = require('@/phaser/dungeons.json')
-
-console.log(adventures)
-console.log(dungeons)
 
 export default class MapScene extends Scene {
 
@@ -99,8 +94,6 @@ export default class MapScene extends Scene {
             store.commit('pve_set_current_dungeon', 1)
             store.commit('pve_show_dungeon_popup')
         })
-        console.log(this.beasties_map)
-
     }
 
     update() {
