@@ -4,6 +4,7 @@
     NavBar
     router-view(id="beasties_router")
     Footer
+    Map
 
 </template>
 
@@ -12,11 +13,12 @@
 
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
+import Map from "@/components/pve/Map";
 
 import 'animate.css'
 import WOW from 'wow.js/dist/wow'
 
-import $ from 'jquery'
+// import $ from 'jquery'
 
 import {mapActions} from 'vuex';
 
@@ -25,7 +27,8 @@ export default {
 
   components: {
     Footer,
-    NavBar
+    NavBar,
+    Map
   },
 
   methods: {
