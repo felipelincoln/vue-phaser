@@ -75,7 +75,7 @@ export default class MapScene extends Scene {
 
         this.input.on('pointerdown', (pointer, gameObject) => {
           if(store.getters.get_player.level >= gameObject[0].data.level){
-            store.commit('pve_set_current_dungeon', 1)
+            store.commit('pve_set_current_dungeon', gameObject[0].data.key)
             store.commit('pve_show_dungeon_popup')
           }
         })

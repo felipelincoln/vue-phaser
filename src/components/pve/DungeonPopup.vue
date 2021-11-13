@@ -3,13 +3,16 @@
     .mb-dungeon-popup-background(@click="close")
 
     .mb-dungeon-popup-inner
-      span Popup fro dungeon {{ get_current_dungeon }}
+      video(autoplay)
+        source(type="video/mp4" :src="get_video()")
       span(@click="close") (close)
 </template>
 
 <script>
 
 import {mapGetters, mapMutations} from 'vuex';
+
+const host = process.env.VUE_APP_ASSETS_PATH
 
 export default {
   name: "DungeonPopup",
@@ -20,6 +23,7 @@ export default {
 
   methods: {
     ...mapMutations(['pve_hide_dungeon_popup']),
+    get_video() { return `${host}/locations/${this.get_current_dungeon}.mp4` },
     close() {
       this.pve_hide_dungeon_popup()
     },
