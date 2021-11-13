@@ -23,10 +23,12 @@ export default class MapScene extends Scene {
 
         for (let i = 0; i < adventures.length; i++){
             this.load.image(adventures[i]['key'], `${host}/pins/${adventures[i]['image']}`)
+            this.load.video(adventures[i]['key'], `${host}/locations/${adventures[i]['video']}`)
         }
 
         for (let i = 0; i < dungeons.length; i++){
             this.load.image(dungeons[i]['key'], `${host}/pins/${dungeons[i]['image']}`)
+            this.load.video(dungeons[i]['key'], `${host}/locations/${dungeons[i]['video']}`)
         }
     }
 
@@ -38,12 +40,12 @@ export default class MapScene extends Scene {
 
         for (let i in this.adventures) {
             this.adventures[i]['object'] = this.add.image(adventures[i]['position']['x'], adventures[i]['position']['y'], adventures[i]['key']).setInteractive()
-            this.adventures[i]['object'].data = {level: adventures[i]['level']}
+            this.adventures[i]['object'].data = adventures[i]
         }
 
         for (let i in this.dungeons) {
             this.dungeons[i]['object'] = this.add.image(dungeons[i]['position']['x'], dungeons[i]['position']['y'], dungeons[i]['key']).setInteractive()
-            this.dungeons[i]['object'].data = {level: dungeons[i]['level']}
+            this.dungeons[i]['object'].data = dungeons[i]
         }
 
         this.input.setTopOnly(true)
@@ -71,6 +73,13 @@ export default class MapScene extends Scene {
           }
         })
 
+        this.input.on('pointerdown', (pointer, gameObject) => {
+          if(store.getters.get_player.level >= gameObject[0].data.level){
+            store.commit('pve_set_current_dungeon', 1)
+            store.commit('pve_show_dungeon_popup')
+          }
+        })
+
         this.input.on('gameobjectout', (pointer, gameObject) => {
           gameObject.clearTint()
         })
@@ -88,17 +97,6 @@ export default class MapScene extends Scene {
               this.dungeons[i]['object'].x = dragX + dungeons[i]['position']['x']
               this.dungeons[i]['object'].y = dragY + dungeons[i]['position']['y']
           }
-
-          this.test_button.x = dragX + 300
-          this.test_button.y = dragY + 300
-
-        })
-
-        this.test_button = this.add.text(300, 300, 'Open Dungeon', { fill: '#0f0' });
-        this.test_button.setInteractive();
-        this.test_button.on('pointerdown', function (){
-            store.commit('pve_set_current_dungeon', 1)
-            store.commit('pve_show_dungeon_popup')
         })
     }
 
