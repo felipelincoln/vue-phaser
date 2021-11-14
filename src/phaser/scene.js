@@ -10,6 +10,28 @@ const host = process.env.VUE_APP_ASSETS_PATH
 const adventures = require('@/phaser/adventures.json')
 const dungeons = require('@/phaser/dungeons.json')
 
+const dragBorders = {
+  xMin: 0,
+  yMin: 260,
+  xMax: 2840 - 2*800,
+  yMax: 1080 / 2
+}
+
+function intervalX(x){ return checkInterval(x, dragBorders.xMin, dragBorders.xMax) }
+function intervalY(y){ return checkInterval(y, dragBorders.yMin, dragBorders.yMax) }
+
+function checkInterval(val, min, max){
+  if(val >= min){
+    if(val <= max){
+      return val
+    }else {
+      return max
+    }
+  }else {
+    return min
+  }
+}
+
 export default class MapScene extends Scene {
 
     constructor() {
@@ -85,17 +107,22 @@ export default class MapScene extends Scene {
         })
 
         this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
-          gameObject.x = dragX
-          gameObject.y = dragY
+          let effectiveDragX = intervalX(dragX)
+          let effectiveDragY = intervalY(dragY)
+
+          console.log(dragY)
+
+          gameObject.x = effectiveDragX
+          gameObject.y = effectiveDragY
           this.beasties_map.movingSpeed = 0
 
           for (let i in this.adventures) {
-              this.adventures[i]['object'].x = dragX + adventures[i]['position']['x']
-              this.adventures[i]['object'].y = dragY + adventures[i]['position']['y']
+              this.adventures[i]['object'].x = effectiveDragX + adventures[i]['position']['x']
+              this.adventures[i]['object'].y = effectiveDragY + adventures[i]['position']['y']
           }
           for (let i in this.dungeons) {
-              this.dungeons[i]['object'].x = dragX + dungeons[i]['position']['x']
-              this.dungeons[i]['object'].y = dragY + dungeons[i]['position']['y']
+              this.dungeons[i]['object'].x = effectiveDragX + dungeons[i]['position']['x']
+              this.dungeons[i]['object'].y = effectiveDragY + dungeons[i]['position']['y']
           }
         })
     }
