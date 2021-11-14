@@ -114,8 +114,10 @@ export default class MapScene extends Scene {
         })
 
         this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
-          let effectiveDragX = intervalX(dragX)
-          let effectiveDragY = intervalY(dragY)
+         // let effectiveDragX = intervalX(dragX)
+         // let effectiveDragY = intervalY(dragY)
+          let effectiveDragX = dragX
+          let effectiveDragY = dragY
 
           gameObject.x = effectiveDragX
           gameObject.y = effectiveDragY

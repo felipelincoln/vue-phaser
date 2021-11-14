@@ -1,9 +1,9 @@
 <template lang='pug'>
-  #beasties_app
+  #beasties_app(style="height:100vh;overflow:hidden")
 
     NavBar
-    router-view(id="beasties_router")
-    Footer
+    // router-view(id="beasties_router")
+    // Footer
     Map
 
 </template>
@@ -64,6 +64,7 @@ export default {
 </script>
 
 <style lang="sass">
-
+  *
+    margin: 0
 
 </style>

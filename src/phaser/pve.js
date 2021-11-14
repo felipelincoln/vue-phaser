@@ -5,8 +5,8 @@ function launch(containerId) {
 
     return new Phaser.Game({
         type: Phaser.AUTO,
-        width: 800,
-        height: 800,
+        width: 2840,
+        height: 1080,
         parent: containerId,
         scene: MapScene
 

@@ -46,6 +46,8 @@ name: "NavBar",
 </script>
 
 <style lang="sass">
-
+  #int_navbar_wrapper
+    line-height: 40px
+    padding-left: 25px
 
 </style>
