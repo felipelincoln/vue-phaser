@@ -1,5 +1,5 @@
 <template lang='pug'>
-  #beasties_app(style="height:100vh;overflow:hidden")
+  #beasties_app(style="height:100vh;width:100vw;overflow:hidden")
 
     NavBar
     // router-view(id="beasties_router")

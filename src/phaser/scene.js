@@ -11,10 +11,10 @@ const adventures = require('@/phaser/adventures.json')
 const dungeons = require('@/phaser/dungeons.json')
 
 const dragBorders = {
-  xMin: 0,
-  yMin: 260,
-  xMax: 2840 - 2*800,
-  yMax: 1080 / 2
+  xMin: -(2840 - window.innerWidth) / 2,
+  xMax: (2840 - window.innerWidth) / 2,
+  yMin: (window.innerHeight -40) - 1080,
+  yMax: 0
 }
 
 function intervalX(x){ return checkInterval(x, dragBorders.xMin, dragBorders.xMax) }
@@ -42,8 +42,6 @@ export default class MapScene extends Scene {
         this.load.image('map', host + 'map/map.png')
         this.load.audio('main', host + 'locations/main.mp3')
 
-        console.log(this)
-
         for (let i = 0; i < adventures.length; i++){
             this.load.image(adventures[i]['key'], `${host}/pins/${adventures[i]['image']}`)
             this.load.audio(adventures[i]['key'], `${host}/locations/${adventures[i]['sound']}`)
@@ -59,7 +57,7 @@ export default class MapScene extends Scene {
         this.adventures = adventures;
         this.dungeons = dungeons;
 
-        this.beasties_map = this.add.image(0, 300, "map").setInteractive();
+        this.beasties_map = this.add.image(0, 0, "map").setInteractive().setOrigin(0)
         this.themePaused = false
         this.themeSong = this.sound.add('main')
         this.themeSong.play()
@@ -77,7 +75,7 @@ export default class MapScene extends Scene {
 
         this.input.setTopOnly(true)
         this.input.setDraggable(this.beasties_map)
-        this.input.dragDistanceThreshold = 16
+        this.input.dragDistanceThreshold = 0
 
         this.beasties_map.isBeingDragged = false
         this.beasties_map.movingSpeed = 0
@@ -114,10 +112,8 @@ export default class MapScene extends Scene {
         })
 
         this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
-         // let effectiveDragX = intervalX(dragX)
-         // let effectiveDragY = intervalY(dragY)
-          let effectiveDragX = dragX
-          let effectiveDragY = dragY
+          let effectiveDragX = intervalX(dragX)
+          let effectiveDragY = intervalY(dragY)
 
           gameObject.x = effectiveDragX
           gameObject.y = effectiveDragY
@@ -136,7 +132,6 @@ export default class MapScene extends Scene {
 
     update() {
         let player_level = store.getters.get_player['level']
-        console.log(store.getters.get_preview_dungeon_popup)
         if(!this.themeSong.isPlaying && !store.getters.get_preview_dungeon_popup){
           this.sound.stopAll()
           this.themeSong.play()
