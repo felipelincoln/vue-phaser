@@ -13,6 +13,7 @@ const state = {
     },
 
     current_dungeon: null,
+    preview_dungeon_popup: false,
     show_dungeon_popup: false,
 
 }
@@ -21,6 +22,7 @@ const getters = {
     get_player: state => state.player,
     get_current_dungeon: state => state.current_dungeon,
     get_show_dungeon_popup: state => state.show_dungeon_popup,
+    get_preview_dungeon_popup: state => state.preview_dungeon_popup,
 
 
 }
@@ -36,10 +38,16 @@ const mutations = {
     },
 
     pve_show_dungeon_popup(state){
+        state.preview_dungeon_popup = false;
         state.show_dungeon_popup = true;
     },
 
+    pve_preview_dungeon_popup(state){
+        state.preview_dungeon_popup = true;
+    },
+
     pve_hide_dungeon_popup(state){
+        state.preview_dungeon_popup = false;
         state.show_dungeon_popup = false;
     },
 

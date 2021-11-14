@@ -2,7 +2,11 @@
   .mb-dungeon-popup
     .mb-dungeon-popup-background(@click="close")
 
-    .mb-dungeon-popup-inner {{ get_current_dungeon }}
+    .mb-dungeon-popup-inner
+      p preview
+      video(autoplay loop)
+        source(type="video/mp4" :src="get_video()")
+      span(@click="open") (open)
       span(@click="close") (close)
 </template>
 
@@ -20,7 +24,11 @@ export default {
   },
 
   methods: {
-    ...mapMutations(['pve_hide_dungeon_popup']),
+    ...mapMutations(['pve_hide_dungeon_popup', 'pve_show_dungeon_popup']),
+    get_video() { return `${host}/locations/${this.get_current_dungeon}.mp4` },
+    open() {
+      this.pve_show_dungeon_popup()
+    },
     close() {
       this.pve_hide_dungeon_popup()
     },
