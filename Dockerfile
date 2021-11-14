@@ -4,4 +4,4 @@ COPY . ./
 
 RUN npm i
 
-CMD ["npm", "run", "serve"]
+CMD ["npm", "run", "serve-prod"]

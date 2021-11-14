@@ -1,6 +1,6 @@
-# fly.toml file generated for magicbeasties on 2021-11-13T18:46:10-03:00
+# fly.toml file generated for long-brook-7423 on 2021-11-13T20:59:32-03:00
 
-app = "magicbeasties"
+app = "long-brook-7423"
 
 kill_signal = "SIGINT"
 kill_timeout = 5
