@@ -63,6 +63,7 @@ export default class MapScene extends Scene {
         this.themePaused = false
         this.themeSong = this.sound.add('main')
         this.themeSong.play()
+        this.themeSong.volume = 0.7
 
         for (let i in this.adventures) {
             this.adventures[i]['object'] = this.add.image(adventures[i]['position']['x'], adventures[i]['position']['y'], adventures[i]['key']).setInteractive()
