@@ -40,17 +40,18 @@ export default class MapScene extends Scene {
 
     preload() {
         this.load.image('map', host + 'map/map.png')
+        this.load.audio('main', host + 'locations/main.mp3')
 
         console.log(this)
 
         for (let i = 0; i < adventures.length; i++){
             this.load.image(adventures[i]['key'], `${host}/pins/${adventures[i]['image']}`)
-            this.load.video(adventures[i]['key'], `${host}/locations/${adventures[i]['video']}`)
+            this.load.audio(adventures[i]['key'], `${host}/locations/${adventures[i]['sound']}`)
         }
 
         for (let i = 0; i < dungeons.length; i++){
             this.load.image(dungeons[i]['key'], `${host}/pins/${dungeons[i]['image']}`)
-            this.load.video(dungeons[i]['key'], `${host}/locations/${dungeons[i]['video']}`)
+            this.load.audio(dungeons[i]['key'], `${host}/locations/${dungeons[i]['sound']}`)
         }
     }
 
@@ -59,6 +60,9 @@ export default class MapScene extends Scene {
         this.dungeons = dungeons;
 
         this.beasties_map = this.add.image(0, 0, "map").setInteractive();
+        this.themePaused = false
+        this.themeSong = this.sound.add('main')
+        this.themeSong.play()
 
         for (let i in this.adventures) {
             this.adventures[i]['object'] = this.add.image(adventures[i]['position']['x'], adventures[i]['position']['y'], adventures[i]['key']).setInteractive()
@@ -99,6 +103,8 @@ export default class MapScene extends Scene {
           if(store.getters.get_player.level >= gameObject[0].data.level){
             store.commit('pve_set_current_dungeon', gameObject[0].data.key)
             store.commit('pve_preview_dungeon_popup')
+            this.themeSong.stop()
+            this.sound.add(gameObject[0].data.key).play()
           }
         })
 
@@ -109,8 +115,6 @@ export default class MapScene extends Scene {
         this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
           let effectiveDragX = intervalX(dragX)
           let effectiveDragY = intervalY(dragY)
-
-          console.log(dragY)
 
           gameObject.x = effectiveDragX
           gameObject.y = effectiveDragY
@@ -129,6 +133,11 @@ export default class MapScene extends Scene {
 
     update() {
         let player_level = store.getters.get_player['level']
+        console.log(store.getters.get_preview_dungeon_popup)
+        if(!this.themeSong.isPlaying && !store.getters.get_preview_dungeon_popup){
+          this.sound.stopAll()
+          this.themeSong.play()
+        }
         // Grayscale adventures with level < player level
 
     }
