@@ -3,7 +3,7 @@
     .mb-dungeon-popup-background(@click="close")
 
     .mb-dungeon-popup-inner
-      video(autoplay)
+      video(autoplay loop)
         source(type="video/mp4" :src="get_video()")
       span(@click="close") (close)
 </template>
