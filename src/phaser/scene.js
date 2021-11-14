@@ -59,19 +59,19 @@ export default class MapScene extends Scene {
         this.adventures = adventures;
         this.dungeons = dungeons;
 
-        this.beasties_map = this.add.image(0, 0, "map").setInteractive();
+        this.beasties_map = this.add.image(0, 300, "map").setInteractive();
         this.themePaused = false
         this.themeSong = this.sound.add('main')
         this.themeSong.play()
         this.themeSong.volume = 0.7
 
         for (let i in this.adventures) {
-            this.adventures[i]['object'] = this.add.image(adventures[i]['position']['x'], adventures[i]['position']['y'], adventures[i]['key']).setInteractive()
+            this.adventures[i]['object'] = this.add.image(adventures[i]['position']['x'], adventures[i]['position']['y'] + 300, adventures[i]['key']).setInteractive()
             this.adventures[i]['object'].data = adventures[i]
         }
 
         for (let i in this.dungeons) {
-            this.dungeons[i]['object'] = this.add.image(dungeons[i]['position']['x'], dungeons[i]['position']['y'], dungeons[i]['key']).setInteractive()
+            this.dungeons[i]['object'] = this.add.image(dungeons[i]['position']['x'], dungeons[i]['position']['y'] + 300, dungeons[i]['key']).setInteractive()
             this.dungeons[i]['object'].data = dungeons[i]
         }
 
