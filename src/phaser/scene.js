@@ -14,14 +14,14 @@ function intervalX(x){
   let min = -(2840 - window.innerWidth) / 2
   let max = (2840 - window.innerWidth) / 2
 
-  return checkInterval(x, min, max) 
+  return checkInterval(x, min, max)
 }
 
 function intervalY(y){
   let min = (window.innerHeight -40) - 1080
   let max = 0
 
-  return checkInterval(y, min, max) 
+  return checkInterval(y, min, max)
 }
 
 function checkInterval(val, min, max){
@@ -61,19 +61,39 @@ export default class MapScene extends Scene {
         this.adventures = adventures;
         this.dungeons = dungeons;
 
-        this.beasties_map = this.add.image(0, 0, "map").setInteractive().setOrigin(0)
+        let minX = (2840 - window.innerWidth) / 2
+        let minY = 0
+
+        this.beasties_map = this.add.image(minX, minY, "map").setInteractive().setOrigin(0)
         this.themePaused = false
         this.themeSong = this.sound.add('main')
         this.themeSong.play()
         this.themeSong.volume = 0.7
 
+        window.addEventListener('resize', () => {
+            let minX = (2840 - window.innerWidth) / 2
+            let minY = 0
+
+            this.beasties_map.x = minX
+            this.beasties_map.y = minY
+
+            for (let i in this.adventures) {
+                this.adventures[i]['object'].x = minX + adventures[i]['position']['x']
+                this.adventures[i]['object'].y = minY + adventures[i]['position']['y']
+            }
+            for (let i in this.dungeons) {
+                this.dungeons[i]['object'].x = minX + dungeons[i]['position']['x']
+                this.dungeons[i]['object'].y = minY + dungeons[i]['position']['y']
+            }
+        })
+
         for (let i in this.adventures) {
-            this.adventures[i]['object'] = this.add.image(adventures[i]['position']['x'], adventures[i]['position']['y'] + 300, adventures[i]['key']).setInteractive()
+            this.adventures[i]['object'] = this.add.image(minX + adventures[i]['position']['x'], adventures[i]['position']['y'], adventures[i]['key']).setInteractive()
             this.adventures[i]['object'].data = adventures[i]
         }
 
         for (let i in this.dungeons) {
-            this.dungeons[i]['object'] = this.add.image(dungeons[i]['position']['x'], dungeons[i]['position']['y'] + 300, dungeons[i]['key']).setInteractive()
+            this.dungeons[i]['object'] = this.add.image(minX + dungeons[i]['position']['x'], dungeons[i]['position']['y'], dungeons[i]['key']).setInteractive()
             this.dungeons[i]['object'].data = dungeons[i]
         }
 
