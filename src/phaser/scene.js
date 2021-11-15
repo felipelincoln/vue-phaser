@@ -10,15 +10,19 @@ const host = process.env.VUE_APP_ASSETS_PATH
 const adventures = require('@/phaser/adventures.json')
 const dungeons = require('@/phaser/dungeons.json')
 
-const dragBorders = {
-  xMin: -(2840 - window.innerWidth) / 2,
-  xMax: (2840 - window.innerWidth) / 2,
-  yMin: (window.innerHeight -40) - 1080,
-  yMax: 0
+function intervalX(x){
+  let min = -(2840 - window.innerWidth) / 2
+  let max = (2840 - window.innerWidth) / 2
+
+  return checkInterval(x, min, max) 
 }
 
-function intervalX(x){ return checkInterval(x, dragBorders.xMin, dragBorders.xMax) }
-function intervalY(y){ return checkInterval(y, dragBorders.yMin, dragBorders.yMax) }
+function intervalY(y){
+  let min = (window.innerHeight -40) - 1080
+  let max = 0
+
+  return checkInterval(y, min, max) 
+}
 
 function checkInterval(val, min, max){
   if(val >= min){
