@@ -11,14 +11,14 @@ const adventures = require('@/phaser/adventures.json')
 const dungeons = require('@/phaser/dungeons.json')
 
 function intervalX(x){
-  let min = -(2840 - window.innerWidth) / 2
-  let max = (2840 - window.innerWidth) / 2
+  let min = -(2840 - Math.min(2840, window.innerWidth)) / 2
+  let max = (2840 - Math.min(2840, window.innerWidth)) / 2
 
   return checkInterval(x, min, max)
 }
 
 function intervalY(y){
-  let min = (window.innerHeight -40) - 1080
+  let min = (Math.min(window.innerHeight -40, 1080)) - 1080
   let max = 0
 
   return checkInterval(y, min, max)
@@ -61,7 +61,7 @@ export default class MapScene extends Scene {
         this.adventures = adventures;
         this.dungeons = dungeons;
 
-        let minX = (2840 - window.innerWidth) / 2
+        let minX = (2840 - Math.min(2840, window.innerWidth)) / 2
         let minY = 0
 
         this.beasties_map = this.add.image(minX, minY, "map").setInteractive().setOrigin(0)
@@ -71,8 +71,10 @@ export default class MapScene extends Scene {
         this.themeSong.volume = 0.7
 
         window.addEventListener('resize', () => {
-            let minX = (2840 - window.innerWidth) / 2
+            let minX = (2840 - Math.min(2840, window.innerWidth)) / 2
             let minY = 0
+
+            console.log(window.innerWidth, )
 
             this.beasties_map.x = minX
             this.beasties_map.y = minY
