@@ -43,6 +43,24 @@ export default class MapScene extends Scene {
     }
 
     preload() {
+        var progress = this.add.graphics();
+        let minX = (2840 - Math.min(2840, window.innerWidth)) / 2
+
+        this.load.on('progress', function (value) {
+
+          console.log(value)
+            progress.clear();
+            progress.fillStyle(0xff00ff, 1);
+            progress.fillRect(minX, 0, Math.min(2840, window.innerWidth) * value, 10);
+
+        });
+
+        this.load.on('complete', function () {
+
+            progress.destroy();
+
+        });
+
         this.load.image('map', host + 'map/map.png')
         this.load.audio('main', host + 'locations/main.mp3')
 
