@@ -43,6 +43,7 @@ export default class MapScene extends Scene {
     }
 
     preload() {
+        this.sound.pauseOnBlur = false
         var progress = this.add.graphics();
         let minX = (2840 - Math.min(2840, window.innerWidth)) / 2
 
@@ -85,8 +86,8 @@ export default class MapScene extends Scene {
         this.beasties_map = this.add.image(minX, minY, "map").setInteractive().setOrigin(0)
         this.themePaused = false
         this.themeSong = this.sound.add('main')
+        this.themeSong.loop = true
         this.themeSong.play()
-        this.themeSong.volume = 0.7
 
         window.addEventListener('resize', () => {
             let minX = (2840 - Math.min(2840, window.innerWidth)) / 2
