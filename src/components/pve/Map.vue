@@ -59,5 +59,15 @@ export default {
 .fade-enter, .fade-leave-to
   opacity: 0
 
+.mb-map-inner
+  display: flex
+  flex-direction: row
+  justify-content: center
+
+
+#game-container 
+  background-image: url(../../../public/public_assets/blurred_bg.jpg)
+  width: 100%
+  max-width: 2840px
 
 </style>
