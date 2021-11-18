@@ -74,6 +74,9 @@ export default class MapScene extends Scene {
             this.load.image(dungeons[i]['key'], `${host}/pins/${dungeons[i]['image']}`)
             this.load.audio(dungeons[i]['key'], `${host}/locations/${dungeons[i]['sound']}`)
         }
+
+        this.load.svg('vol-on', `${host}/volume-on.svg`, {width: 30, height: 30})
+        this.load.svg('vol-off', `${host}/volume-off.svg`, {width: 30, height: 30})
     }
 
     create() {
@@ -83,20 +86,29 @@ export default class MapScene extends Scene {
         let minX = (2840 - Math.min(2840, window.innerWidth)) / 2
         let minY = 0
 
+
         this.beasties_map = this.add.image(minX, minY, "map").setInteractive().setOrigin(0)
         this.themePaused = false
         this.themeSong = this.sound.add('main')
         this.themeSong.loop = true
         this.themeSong.play()
 
+        this.volumeOn = this.add.image(minX + window.innerWidth - 30, 30, 'vol-on').setInteractive()
+        this.volumeOn.name = 'volume'
+        this.volumeOff = this.add.image(minX + window.innerWidth - 30, 30, 'vol-off').setInteractive()
+        this.volumeOff.name = 'volume'
+        this.volumeOff.visible = false
+        
+
+        // console.log(this.volumeIcon)
+
         window.addEventListener('resize', () => {
             let minX = (2840 - Math.min(2840, window.innerWidth)) / 2
             let minY = 0
 
-            console.log(window.innerWidth, )
-
             this.beasties_map.x = minX
             this.beasties_map.y = minY
+            this.volumeIcon.x = minX + window.innerWidth - 30
 
             for (let i in this.adventures) {
                 this.adventures[i]['object'].x = minX + adventures[i]['position']['x']
@@ -144,7 +156,12 @@ export default class MapScene extends Scene {
         })
 
         this.input.on('pointerdown', (pointer, gameObject) => {
-          if(store.getters.get_player.level >= gameObject[0].data.level){
+          console.log(gameObject[0], this.volumeIcon)
+          if(gameObject[0].name == "volume"){
+            this.volumeOn.visible = !this.volumeOn.visible
+            this.volumeOff.visible = !this.volumeOff.visible
+          }
+          else if(store.getters.get_player.level >= gameObject[0].data.level){
             console.log(gameObject[0])
             store.commit('pve_set_current_dungeon', gameObject[0].data)
             store.commit('pve_preview_dungeon_popup')
@@ -182,6 +199,8 @@ export default class MapScene extends Scene {
           this.sound.stopAll()
           this.themeSong.play()
         }
+        if(this.volumeOn.visible){ this.sound.volume = 1 }
+        else if(this.volumeOff.visible){ this.sound.volume = 0 }
         // Grayscale adventures with level < player level
 
     }
