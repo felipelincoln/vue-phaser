@@ -1,9 +1,8 @@
 <template lang="pug">
-  .mb-dungeon-popup
-    .mb-dungeon-popup-background(@click="close")
+  .mb-dungeon-popup2
+    .mb-dungeon-popup-background2(@click="close")
 
-    .mb-dungeon-popup-inner
-      p preview
+    .mb-dungeon-popup-inner2
       video(autoplay loop)
         source(type="video/mp4" :src="get_video()")
       span(@click="open") (open)
@@ -38,7 +37,7 @@ export default {
 </script>
 
 <style lang="sass">
-.mb-dungeon-popup
+.mb-dungeon-popup2
   display: flex
   align-items: center
   flex-direction: column
@@ -50,16 +49,16 @@ export default {
   width: 100%
   height: 100%
 
-  .mb-dungeon-popup-background
+  .mb-dungeon-popup-background2
     position: absolute
     top: 0
     right: 0
     left: 0
     bottom: 0
     background-color: black
-    opacity: 0.1
+    opacity: 0.7
 
-  .mb-dungeon-popup-inner
+  .mb-dungeon-popup-inner2
     position: absolute
     display: flex
     flex-direction: column
