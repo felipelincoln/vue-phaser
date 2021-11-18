@@ -2,7 +2,7 @@
   .mb-dungeon-popup
     .mb-dungeon-popup-background(@click="close")
 
-    .mb-dungeon-popup-inner {{ get_current_dungeon }}
+    .mb-dungeon-popup-inner {{ get_current_dungeon.key }}
       span(@click="close") (close)
 </template>
 

@@ -109,12 +109,12 @@ export default class MapScene extends Scene {
 
         for (let i in this.adventures) {
             this.adventures[i]['object'] = this.add.image(minX + adventures[i]['position']['x'], adventures[i]['position']['y'], adventures[i]['key']).setInteractive()
-            this.adventures[i]['object'].data = adventures[i]
+          this.adventures[i]['object'].data = {...adventures[i], type: "Adventure"}
         }
 
         for (let i in this.dungeons) {
             this.dungeons[i]['object'] = this.add.image(minX + dungeons[i]['position']['x'], dungeons[i]['position']['y'], dungeons[i]['key']).setInteractive()
-            this.dungeons[i]['object'].data = dungeons[i]
+          this.dungeons[i]['object'].data = {...dungeons[i], type: "Dungeon"}
         }
 
         this.input.setTopOnly(true)
@@ -144,7 +144,8 @@ export default class MapScene extends Scene {
 
         this.input.on('pointerdown', (pointer, gameObject) => {
           if(store.getters.get_player.level >= gameObject[0].data.level){
-            store.commit('pve_set_current_dungeon', gameObject[0].data.key)
+            console.log(gameObject[0])
+            store.commit('pve_set_current_dungeon', gameObject[0].data)
             store.commit('pve_preview_dungeon_popup')
             this.themeSong.stop()
             this.sound.add(gameObject[0].data.key).play()

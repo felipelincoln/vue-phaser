@@ -6,7 +6,7 @@
       video(autoplay loop)
         source(type="video/mp4" :src="get_video()")
       .button-popup
-        button(@click="open") Open Dungeon
+        button(@click="open") Open {{ get_current_dungeon.type }}
       span(@click="close")
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
 </template>
@@ -26,7 +26,7 @@ export default {
 
   methods: {
     ...mapMutations(['pve_hide_dungeon_popup', 'pve_show_dungeon_popup']),
-    get_video() { return `${host}/locations/${this.get_current_dungeon}.mp4` },
+    get_video() { return `${host}/locations/${this.get_current_dungeon.key}.mp4` },
     open() {
       this.pve_show_dungeon_popup()
     },
