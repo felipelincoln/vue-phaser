@@ -57,7 +57,7 @@ export default {
     left: 0
     bottom: 0
     background-color: black
-    opacity: 0.7
+    opacity: 0.5
 
   .mb-dungeon-popup-inner2
     position: absolute
@@ -79,6 +79,7 @@ export default {
     border-radius: 18px
     max-width: 95vw
     max-height: calc(80vh - 120px)
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3),0 2px 4px -1px rgba(0,0,0,0.1)
 
   button
     font-family: Montserrat,sans-serif
