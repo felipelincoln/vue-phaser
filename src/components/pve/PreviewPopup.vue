@@ -7,6 +7,8 @@
         source(type="video/mp4" :src="get_video()")
       .button-popup
         button(@click="open") Open Dungeon
+      span(@click="close")
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
 </template>
 
 <script>
@@ -47,7 +49,7 @@ export default {
   z-index: 30
 
   width: 100%
-  height: 100%
+  height: calc(100vh - 40px)
 
   .mb-dungeon-popup-background2
     position: absolute
@@ -56,7 +58,7 @@ export default {
     left: 0
     bottom: 0
     background-color: black
-    opacity: 0.5
+    opacity: 0.2
 
   .mb-dungeon-popup-inner2
     position: relative
@@ -74,9 +76,10 @@ export default {
 
   video
     border-radius: 18px
+    background-color: black
     max-width: 95vw
-    max-height: calc(80vh - 120px)
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3),0 2px 4px -1px rgba(0,0,0,0.1)
+    max-height: calc(80vh - 40px)
+    box-shadow: 0 2px 4px rgba(0,0,0,.3)!important
 
   button
     font-family: Montserrat,sans-serif
@@ -106,5 +109,14 @@ export default {
     width: 100%
     left: 0
     bottom: calc(3% + 10px)
+
+  svg
+    position: absolute
+    right: 0
+    top: 0
+    height: 1.5em
+    padding: 10px
+    cursor: pointer
+    color: white
 
 </style>
