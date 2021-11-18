@@ -5,8 +5,8 @@
     .mb-dungeon-popup-inner2
       video(autoplay loop)
         source(type="video/mp4" :src="get_video()")
-      span(@click="open") (open)
-      span(@click="close") (close)
+      .button-popup
+        button(@click="open") Open Dungeon
 </template>
 
 <script>
@@ -70,5 +70,37 @@ export default {
     background-color: white
     padding: 20px
     margin: auto
+
+  video
+    border-radius: 18px
+
+  button
+    font-family: Montserrat,sans-serif
+    font-size: 14px
+    font-weight: 700
+    border: none
+    outline: none !important
+    user-select: none
+    text-decoration: none !important
+    transition: all .3s ease
+    cursor: pointer
+    align-items: center
+    display: block
+    padding: 12px 20px
+    color: #fff
+    background: linear-gradient(100.13deg,#ff007a 1.78%,#ffc700 139.38%)
+    box-shadow: 4px 2px 8px rgb(255 199 0 / 25%), 2px 4px 8px rgb(255 0 122 / 25%)
+    border-radius: 20px
+    margin: 0 auto
+    z-index: 1
+
+  button:hover
+    box-shadow: 4px 2px 8px rgb(255 199 0 / 60%), 2px 4px 8px rgb(255 0 122 / 60%)
+
+  .button-popup
+    position: absolute
+    width: 100%
+    left: 0
+    bottom: 40px
 
 </style>
