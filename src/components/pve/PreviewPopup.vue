@@ -3,10 +3,11 @@
     .mb-dungeon-popup-background2(@click="close")
 
     .mb-dungeon-popup-inner2
-      video(autoplay loop)
-        source(type="video/mp4" :src="get_video()")
-      .button-popup
-        button(@click="open") Open Dungeon
+      .video
+        video(autoplay loop)
+          source(type="video/mp4" :src="get_video()")
+        .button-popup
+          button(@click="open") Open Dungeon
 </template>
 
 <script>
@@ -60,19 +61,24 @@ export default {
 
   .mb-dungeon-popup-inner2
     position: absolute
+    top: 0
     display: flex
     flex-direction: column
-    max-height: calc(100vh - 40px)
-    width: 100%
-    max-width: 400px
-    overflow: hidden
-    border-radius: 18px
-    background-color: white
-    padding: 20px
-    margin: auto
+    justify-content: center
+    height: calc(100vh - 40px)
+    // background-color: white
+    // max-height: 700px
+    // width: 100%
+    // height: 100%
+    // max-width: 50vw
+
+  .video
+    position: relative
 
   video
     border-radius: 18px
+    max-width: 95vw
+    max-height: calc(80vh - 120px)
 
   button
     font-family: Montserrat,sans-serif
@@ -101,6 +107,6 @@ export default {
     position: absolute
     width: 100%
     left: 0
-    bottom: 40px
+    bottom: calc(3% + 10px)
 
 </style>
