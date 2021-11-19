@@ -101,14 +101,35 @@ export default class MapScene extends Scene {
         
 
         // console.log(this.volumeIcon)
+//        screen.orientation.addEventListener('change', () => {
+//            console.log('orientation')
+//            let minX = (2840 - Math.min(2840, window.innerWidth)) / 2
+//            let minY = 0
+//
+//            this.beasties_map.x = minX
+//            this.beasties_map.y = minY
+//            this.volumeOn.x = minX + window.innerWidth - 30
+//            this.volumeOff.x = minX + window.innerWidth - 30
+//
+//            for (let i in this.adventures) {
+//                this.adventures[i]['object'].x = minX + adventures[i]['position']['x']
+//                this.adventures[i]['object'].y = minY + adventures[i]['position']['y']
+//            }
+//            for (let i in this.dungeons) {
+//                this.dungeons[i]['object'].x = minX + dungeons[i]['position']['x']
+//                this.dungeons[i]['object'].y = minY + dungeons[i]['position']['y']
+//            }
+//        })
 
         window.addEventListener('resize', () => {
+            console.log('resize')
             let minX = (2840 - Math.min(2840, window.innerWidth)) / 2
             let minY = 0
 
             this.beasties_map.x = minX
             this.beasties_map.y = minY
-            this.volumeIcon.x = minX + window.innerWidth - 30
+            this.volumeOn.x = minX + window.innerWidth - 30
+            this.volumeOff.x = minX + window.innerWidth - 30
 
             for (let i in this.adventures) {
                 this.adventures[i]['object'].x = minX + adventures[i]['position']['x']
