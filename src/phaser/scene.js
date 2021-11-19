@@ -97,7 +97,18 @@ export default class MapScene extends Scene {
         this.volumeOn.name = 'volume'
         this.volumeOff = this.add.image(minX + window.innerWidth - 30, 30, 'vol-off').setInteractive()
         this.volumeOff.name = 'volume'
-        this.volumeOff.visible = false
+
+        store.dispatch('get_volume')
+        .then((value) => {
+          if(value == null || value == "on"){
+            this.volumeOff.visible = false
+            this.sound.volume = 1
+          }
+          else {
+            this.volumeOn.visible = false
+            this.sound.volume = 0
+          }
+        })
         
 
         // console.log(this.volumeIcon)
@@ -177,10 +188,20 @@ export default class MapScene extends Scene {
         })
 
         this.input.on('pointerdown', (pointer, gameObject) => {
-          console.log(gameObject[0], this.volumeIcon)
           if(gameObject[0].name == "volume"){
             this.volumeOn.visible = !this.volumeOn.visible
             this.volumeOff.visible = !this.volumeOff.visible
+
+            if(this.volumeOn.visible){
+              console.log('set cookie true')
+              store.dispatch('set_volume', "on")
+              this.sound.volume = 1
+            }
+            else if(this.volumeOff.visible){
+              console.log('set cookie false')
+              store.dispatch('set_volume', "off")
+              this.sound.volume = 0
+            }
           }
           else if(store.getters.get_player.level >= gameObject[0].data.level){
             console.log(gameObject[0])
@@ -220,8 +241,6 @@ export default class MapScene extends Scene {
           this.sound.stopAll()
           this.themeSong.play()
         }
-        if(this.volumeOn.visible){ this.sound.volume = 1 }
-        else if(this.volumeOff.visible){ this.sound.volume = 0 }
         // Grayscale adventures with level < player level
 
     }

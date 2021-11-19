@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
+import VueCookies from 'vue-cookies'
+Vue.use(VueCookies)
 Vue.use(Vuex)
 
 
@@ -54,10 +55,12 @@ const mutations = {
 }
 
 const actions = {
-
-
-
-
+  set_volume(e, value){
+    Vue.$cookies.set("volume", value)
+  },
+  get_volume(){
+    return Vue.$cookies.get("volume")
+  }
 }
 
 export default {
