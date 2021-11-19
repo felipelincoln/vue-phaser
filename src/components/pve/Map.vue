@@ -2,6 +2,8 @@
   #beasties_map_wrapper
 
     transition(name='fade')
+      PreviewPopup(v-if="get_preview_dungeon_popup")
+    transition(name='fade')
       DungeonPopup(v-if="get_show_dungeon_popup")
 
     .mb-map-inner
@@ -10,6 +12,7 @@
 </template>
 
 <script>
+import PreviewPopup from "@/components/pve/PreviewPopup";
 import DungeonPopup from "@/components/pve/DungeonPopup";
 import {mapGetters} from 'vuex';
 
@@ -17,6 +20,7 @@ export default {
   name: "Map",
 
   components: {
+    PreviewPopup,
     DungeonPopup
   },
 
@@ -29,7 +33,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['get_show_dungeon_popup'])
+    ...mapGetters(['get_preview_dungeon_popup', 'get_show_dungeon_popup'])
   },
 
   async mounted() {
@@ -55,5 +59,15 @@ export default {
 .fade-enter, .fade-leave-to
   opacity: 0
 
+.mb-map-inner
+  display: flex
+  flex-direction: row
+  justify-content: center
+
+
+#game-container 
+  background-image: url(../../../public/public_assets/blurred_bg.jpg)
+  width: 100%
+  max-width: 2840px
 
 </style>

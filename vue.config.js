@@ -1,6 +1,8 @@
 module.exports = {
     productionSourceMap: false,
 
+    devServer: { disableHostCheck: true },
+
     chainWebpack: config => {
         // remove the prefetch plugin
         config.plugins.delete('prefetch')

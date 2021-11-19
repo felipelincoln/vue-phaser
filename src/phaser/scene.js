@@ -10,6 +10,32 @@ const host = process.env.VUE_APP_ASSETS_PATH
 const adventures = require('@/phaser/adventures.json')
 const dungeons = require('@/phaser/dungeons.json')
 
+function intervalX(x){
+  let min = -(2840 - Math.min(2840, window.innerWidth)) / 2
+  let max = (2840 - Math.min(2840, window.innerWidth)) / 2
+
+  return checkInterval(x, min, max)
+}
+
+function intervalY(y){
+  let min = (Math.min(window.innerHeight -40, 1080)) - 1080
+  let max = 0
+
+  return checkInterval(y, min, max)
+}
+
+function checkInterval(val, min, max){
+  if(val >= min){
+    if(val <= max){
+      return val
+    }else {
+      return max
+    }
+  }else {
+    return min
+  }
+}
+
 export default class MapScene extends Scene {
 
     constructor() {
@@ -17,35 +43,204 @@ export default class MapScene extends Scene {
     }
 
     preload() {
+        this.sound.pauseOnBlur = false
+        var progress = this.add.graphics();
+        let minX = (2840 - Math.min(2840, window.innerWidth)) / 2
+
+        this.load.on('progress', function (value) {
+
+          console.log(value)
+            progress.clear();
+            progress.fillStyle(0xff00ff, 1);
+            progress.fillRect(minX, 0, Math.min(2840, window.innerWidth) * value, 10);
+
+        });
+
+        this.load.on('complete', function () {
+
+            progress.destroy();
+
+        });
+
         this.load.image('map', host + 'map/map.png')
+        this.load.audio('main', host + 'locations/main.mp3')
 
         for (let i = 0; i < adventures.length; i++){
             this.load.image(adventures[i]['key'], `${host}/pins/${adventures[i]['image']}`)
+            this.load.audio(adventures[i]['key'], `${host}/locations/${adventures[i]['sound']}`)
         }
+
+        for (let i = 0; i < dungeons.length; i++){
+            this.load.image(dungeons[i]['key'], `${host}/pins/${dungeons[i]['image']}`)
+            this.load.audio(dungeons[i]['key'], `${host}/locations/${dungeons[i]['sound']}`)
+        }
+
+        this.load.svg('vol-on', `${host}/volume-on.svg`, {width: 30, height: 30})
+        this.load.svg('vol-off', `${host}/volume-off.svg`, {width: 30, height: 30})
     }
 
     create() {
-
-        this.beasties_map = this.add.image(0, 0, "map").setInteractive();
-
         this.adventures = adventures;
-        for (let i in this.adventures) {
-            this.adventures[i]['object'] = this.add.image(adventures[i]['position']['x'], adventures[i]['position']['y'], adventures[i]['key'])
-        }
+        this.dungeons = dungeons;
 
-        const test_button = this.add.text(300, 300, 'Open Dungeon', { fill: '#0f0' });
-        test_button.setInteractive();
-        test_button.on('pointerdown', function (){
-            store.commit('pve_set_current_dungeon', 1)
-            store.commit('pve_show_dungeon_popup')
+        let minX = (2840 - Math.min(2840, window.innerWidth)) / 2
+        let minY = 0
+
+
+        this.beasties_map = this.add.image(minX, minY, "map").setInteractive().setOrigin(0)
+        this.themePaused = false
+        this.themeSong = this.sound.add('main')
+        this.themeSong.loop = true
+        this.themeSong.play()
+
+        this.volumeOn = this.add.image(minX + window.innerWidth - 30, 30, 'vol-on').setInteractive()
+        this.volumeOn.name = 'volume'
+        this.volumeOff = this.add.image(minX + window.innerWidth - 30, 30, 'vol-off').setInteractive()
+        this.volumeOff.name = 'volume'
+
+        store.dispatch('get_volume')
+        .then((value) => {
+          if(value == null || value == "on"){
+            this.volumeOff.visible = false
+            this.sound.volume = 1
+          }
+          else {
+            this.volumeOn.visible = false
+            this.sound.volume = 0
+          }
+        })
+        
+
+        // console.log(this.volumeIcon)
+//        screen.orientation.addEventListener('change', () => {
+//            console.log('orientation')
+//            let minX = (2840 - Math.min(2840, window.innerWidth)) / 2
+//            let minY = 0
+//
+//            this.beasties_map.x = minX
+//            this.beasties_map.y = minY
+//            this.volumeOn.x = minX + window.innerWidth - 30
+//            this.volumeOff.x = minX + window.innerWidth - 30
+//
+//            for (let i in this.adventures) {
+//                this.adventures[i]['object'].x = minX + adventures[i]['position']['x']
+//                this.adventures[i]['object'].y = minY + adventures[i]['position']['y']
+//            }
+//            for (let i in this.dungeons) {
+//                this.dungeons[i]['object'].x = minX + dungeons[i]['position']['x']
+//                this.dungeons[i]['object'].y = minY + dungeons[i]['position']['y']
+//            }
+//        })
+
+        window.addEventListener('resize', () => {
+            console.log('resize')
+            let minX = (2840 - Math.min(2840, window.innerWidth)) / 2
+            let minY = 0
+
+            this.beasties_map.x = minX
+            this.beasties_map.y = minY
+            this.volumeOn.x = minX + window.innerWidth - 30
+            this.volumeOff.x = minX + window.innerWidth - 30
+
+            for (let i in this.adventures) {
+                this.adventures[i]['object'].x = minX + adventures[i]['position']['x']
+                this.adventures[i]['object'].y = minY + adventures[i]['position']['y']
+            }
+            for (let i in this.dungeons) {
+                this.dungeons[i]['object'].x = minX + dungeons[i]['position']['x']
+                this.dungeons[i]['object'].y = minY + dungeons[i]['position']['y']
+            }
         })
 
-        console.log(this.adventures)
+        for (let i in this.adventures) {
+            this.adventures[i]['object'] = this.add.image(minX + adventures[i]['position']['x'], adventures[i]['position']['y'], adventures[i]['key']).setInteractive()
+          this.adventures[i]['object'].data = {...adventures[i], type: "Adventure"}
+        }
+
+        for (let i in this.dungeons) {
+            this.dungeons[i]['object'] = this.add.image(minX + dungeons[i]['position']['x'], dungeons[i]['position']['y'], dungeons[i]['key']).setInteractive()
+          this.dungeons[i]['object'].data = {...dungeons[i], type: "Dungeon"}
+        }
+
+        this.input.setTopOnly(true)
+        this.input.setDraggable(this.beasties_map)
+        this.input.dragDistanceThreshold = 0
+
+        this.beasties_map.isBeingDragged = false
+        this.beasties_map.movingSpeed = 0
+
+        this.input.on('dragstart', (pointer, gameObject) => {
+          this.beasties_map.isBeingDragged = true
+        })
+
+        this.input.on('dragend', (pointer, gameObject) => {
+          this.beasties_map.isBeingDragged = false
+        })
+
+        this.input.on('gameobjectover', (pointer, gameObject) => {
+          if(gameObject != this.beasties_map){
+            if(gameObject.data.level > store.getters.get_player.level){
+              gameObject.setTint(0xaaaaaa)
+            } else {
+              gameObject.setTint(0x00ff00)
+            }
+          }
+        })
+
+        this.input.on('pointerdown', (pointer, gameObject) => {
+          if(gameObject[0].name == "volume"){
+            this.volumeOn.visible = !this.volumeOn.visible
+            this.volumeOff.visible = !this.volumeOff.visible
+
+            if(this.volumeOn.visible){
+              console.log('set cookie true')
+              store.dispatch('set_volume', "on")
+              this.sound.volume = 1
+            }
+            else if(this.volumeOff.visible){
+              console.log('set cookie false')
+              store.dispatch('set_volume', "off")
+              this.sound.volume = 0
+            }
+          }
+          else if(store.getters.get_player.level >= gameObject[0].data.level){
+            console.log(gameObject[0])
+            store.commit('pve_set_current_dungeon', gameObject[0].data)
+            store.commit('pve_preview_dungeon_popup')
+            this.themeSong.stop()
+            this.sound.add(gameObject[0].data.key).play()
+          }
+        })
+
+        this.input.on('gameobjectout', (pointer, gameObject) => {
+          gameObject.clearTint()
+        })
+
+        this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
+          let effectiveDragX = intervalX(dragX)
+          let effectiveDragY = intervalY(dragY)
+
+          gameObject.x = effectiveDragX
+          gameObject.y = effectiveDragY
+          this.beasties_map.movingSpeed = 0
+
+          for (let i in this.adventures) {
+              this.adventures[i]['object'].x = effectiveDragX + adventures[i]['position']['x']
+              this.adventures[i]['object'].y = effectiveDragY + adventures[i]['position']['y']
+          }
+          for (let i in this.dungeons) {
+              this.dungeons[i]['object'].x = effectiveDragX + dungeons[i]['position']['x']
+              this.dungeons[i]['object'].y = effectiveDragY + dungeons[i]['position']['y']
+          }
+        })
     }
 
     update() {
-
         let player_level = store.getters.get_player['level']
+        if(!this.themeSong.isPlaying && !store.getters.get_preview_dungeon_popup){
+          this.sound.stopAll()
+          this.themeSong.play()
+        }
         // Grayscale adventures with level < player level
 
     }

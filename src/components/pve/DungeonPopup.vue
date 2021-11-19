@@ -2,14 +2,15 @@
   .mb-dungeon-popup
     .mb-dungeon-popup-background(@click="close")
 
-    .mb-dungeon-popup-inner
-      span Popup fro dungeon {{ get_current_dungeon }}
+    .mb-dungeon-popup-inner {{ get_current_dungeon.key }}
       span(@click="close") (close)
 </template>
 
 <script>
 
 import {mapGetters, mapMutations} from 'vuex';
+
+const host = process.env.VUE_APP_ASSETS_PATH
 
 export default {
   name: "DungeonPopup",
