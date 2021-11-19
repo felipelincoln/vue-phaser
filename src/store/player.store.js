@@ -38,7 +38,7 @@ const mutations = {
     },
 
     pve_show_dungeon_popup(state){
-        state.preview_dungeon_popup = false;
+//        state.preview_dungeon_popup = false;
         state.show_dungeon_popup = true;
     },
 
