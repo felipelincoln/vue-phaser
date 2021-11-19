@@ -76,6 +76,10 @@ export default {
 
   video
     border-radius: 18px
+    background-image: url("../../../public/public_assets/loading.gif")
+    background-position: 50% 20%
+    background-size: 20%
+    background-repeat: no-repeat
     background-color: black
     max-width: 95vw
     max-height: calc(80vh - 40px)
